@@ -52,26 +52,7 @@ public class ImageService implements IImageService {
 
         for (MultipartFile file : files) {
 
-            try {
-                Image image = new Image();
-                image.setFileName(file.getOriginalFilename());
-                image.setFileType(file.getContentType());
-                image.setImage(new SerialBlob(file.getBytes()));
-                image.setProduct(product);
-                String downloadUrl = DOWNLOAD_URL + image.getId();
-                image.setDownloadUrl(downloadUrl);
-                Image savedImage = imageRepository.save(image);
-
-                savedImage.setDownloadUrl(DOWNLOAD_URL + savedImage.getId());
-                imageRepository.save(savedImage);
-
-                ImageDto imageDto = mapImageDto(savedImage);
-
-                savedImageDtos.add(imageDto);
-
-            } catch (IOException | SQLException e) {
-                throw new RuntimeException(e.getMessage());
-            }
+            convertImageToPersist(product, savedImageDtos, file);
         }
         return savedImageDtos;
     }
@@ -92,7 +73,32 @@ public class ImageService implements IImageService {
 
     }
 
+    private void convertImageToPersist(Product product, List<ImageDto> savedImageDtos, MultipartFile file) {
+
+        try {
+            Image image = new Image();
+            image.setFileName(file.getOriginalFilename());
+            image.setFileType(file.getContentType());
+            image.setImage(new SerialBlob(file.getBytes()));
+            image.setProduct(product);
+            String downloadUrl = DOWNLOAD_URL + image.getId();
+            image.setDownloadUrl(downloadUrl);
+            Image savedImage = imageRepository.save(image);
+
+            savedImage.setDownloadUrl(DOWNLOAD_URL + savedImage.getId());
+            imageRepository.save(savedImage);
+
+            ImageDto imageDto = mapImageDto(savedImage);
+
+            savedImageDtos.add(imageDto);
+
+        } catch (IOException | SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
     private static ImageDto mapImageDto(Image savedImage) {
+
         ImageDto imageDto = new ImageDto();
         imageDto.setImageId(savedImage.getId());
         imageDto.setImageName(savedImage.getFileName());
