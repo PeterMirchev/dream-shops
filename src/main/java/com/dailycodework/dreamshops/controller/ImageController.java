@@ -61,5 +61,4 @@ public class ImageController {
         return ResponseEntity.ok(new ApiResponse("Delete success!", null));
     }
 
-    //TODO: test
 }
