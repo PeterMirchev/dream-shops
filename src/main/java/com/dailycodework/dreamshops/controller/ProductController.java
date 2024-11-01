@@ -59,8 +59,8 @@ public class ProductController {
         return ResponseEntity.ok(new ApiResponse("Product Successfully Deleted!", null));
     }
 
-    @GetMapping("/by/brand-and-name/{brandName}/{productName}")
-    public ResponseEntity<ApiResponse> getProductByBrandAndName(@PathVariable String brandName, @PathVariable String productName) {
+    @GetMapping("/products/by/brand-and-name")
+    public ResponseEntity<ApiResponse> getProductByBrandAndName(@RequestParam String brandName, @RequestParam String productName) {
 
         List<Product> products = productService.getAllProductsByBrandAndName(brandName, productName);
 
@@ -73,5 +73,29 @@ public class ProductController {
         List<Product> products = productService.getAllProductsByCategoryAndBrand(category, brand);
 
         return ResponseEntity.ok(new ApiResponse("Success", products));
+    }
+
+    @GetMapping("/by-name/{name}/product")
+    public ResponseEntity<ApiResponse> getProductByName(@PathVariable String name) {
+
+        List<Product> products = productService.getAllProductsByName(name);
+
+        return ResponseEntity.ok(new ApiResponse("Success", products));
+    }
+
+    @GetMapping("product/by-brand")
+    public ResponseEntity<ApiResponse> getProductByBrand(@RequestParam String brand) {
+
+        List<Product> products = productService.getAllProductsByName(brand);
+
+        return ResponseEntity.ok(new ApiResponse("Success", products));
+    }
+
+    @GetMapping("product/{category}/all/products")
+    public ResponseEntity<ApiResponse> getAllProductByCategory(@PathVariable String category) {
+
+        List<Product> products = productService.getAllProductsByCategory(category);
+
+        return ResponseEntity.ok(new ApiResponse("Success!", products));
     }
 }
