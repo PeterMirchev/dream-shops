@@ -23,8 +23,9 @@ public class ProductController {
     public ResponseEntity<ApiResponse> getAllProducts() {
 
         List<Product> products = productService.getAllProducts();
+        Long count = productService.count();
 
-        return ResponseEntity.ok(new ApiResponse("Success", products));
+        return ResponseEntity.ok(new ApiResponse(String.format("Total Products: %s", count), products));
     }
 
     @GetMapping("/product/{productId}/product")
