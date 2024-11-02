@@ -2,6 +2,7 @@ package com.dailycodework.dreamshops.repository;
 
 import com.dailycodework.dreamshops.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,4 +20,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByBrandAndName(String brand, String name);
 
     Long countByBrandAndName(String brand, String name);
+
+    @Query("""
+    SELECT COUNT(*) FROM Product p
+    WHERE p.brand = :brand
+        """)
+    Long countByBrand(String brand);
 }

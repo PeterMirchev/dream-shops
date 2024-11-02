@@ -87,9 +87,11 @@ public class ProductController {
     @GetMapping("product/by-brand")
     public ResponseEntity<ApiResponse> getProductByBrand(@RequestParam String brand) {
 
-        List<Product> products = productService.getAllProductsByName(brand);
+        List<Product> products = productService.getAllProductsByBrand(brand);
 
-        return ResponseEntity.ok(new ApiResponse("Success", products));
+        Long count = productService.countByBrand(brand);
+
+        return ResponseEntity.ok(new ApiResponse(String.format("Total Products with Brand %s: %s", brand, count),products));
     }
 
     @GetMapping("product/{category}/all/products")
