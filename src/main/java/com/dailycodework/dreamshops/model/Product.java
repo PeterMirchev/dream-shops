@@ -1,5 +1,7 @@
 package com.dailycodework.dreamshops.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

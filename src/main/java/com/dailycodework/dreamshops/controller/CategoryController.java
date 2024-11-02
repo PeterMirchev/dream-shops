@@ -56,7 +56,7 @@ public class CategoryController {
         return ResponseEntity.ok(new ApiResponse("Category Deleted!", null));
     }
 
-    @PutMapping("/category/{id}}/update")
+    @PutMapping("/category/{id}/update")
     public ResponseEntity<ApiResponse> updateCategory(@PathVariable Long id, @RequestBody Category category) {
 
         Category updatedCategory = categoryService.updateCategory(category, id);

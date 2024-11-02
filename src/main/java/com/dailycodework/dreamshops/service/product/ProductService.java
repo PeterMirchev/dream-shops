@@ -42,7 +42,7 @@ public class ProductService implements IProductService {
     public Product getProductById(Long id) {
 
         return productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException(String.format("Invalid Product id - %s", id)));
+                .orElseThrow(() -> new ProductNotFoundException(String.format("Product Not found! Invalid Product id - %s", id)));
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ProductService implements IProductService {
         productRepository.findById(id)
                 .ifPresentOrElse(productRepository::delete,
                         () -> {
-                    throw new ProductNotFoundException(String.format("Invalid Product id - %s", id));
+                    throw new ProductNotFoundException(String.format("Product Not found! Invalid Product id - %s", id));
                         });
     }
 
@@ -61,7 +61,7 @@ public class ProductService implements IProductService {
         return productRepository.findById(productId)
                 .map(existingProduct -> updateExistingProduct(existingProduct, request))
                 .map(productRepository::save)
-                .orElseThrow(() -> new ProductNotFoundException(String.format("Invalid Product id - %s", productId)));
+                .orElseThrow(() -> new ProductNotFoundException(String.format("Product Not found! Invalid Product id - %s", productId)));
     }
 
     @Override
