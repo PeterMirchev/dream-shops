@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
+
     List<Product> findByCategoryName(String category);
 
     List<Product> findByBrand(String brand);
@@ -26,4 +27,20 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     WHERE p.brand = :brand
         """)
     Long countByBrand(String brand);
+    @Query("""
+    SELECT COUNT(*) FROM Product p
+    WHERE p.category.name = :category
+        """)
+    Long countByCategoryName(String category);
+    @Query("""
+    SELECT COUNT(*) FROM Product p
+    WHERE p.name = :name
+        """)
+    Long countByProductName(String name);
+    @Query("""
+    SELECT COUNT(*) FROM Product p
+    WHERE p.category.name = :category
+    AND p.brand =:brand
+        """)
+    Long countByCategoryAndBrand(String category, String brand);
 }

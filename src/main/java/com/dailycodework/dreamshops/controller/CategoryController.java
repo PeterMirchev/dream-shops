@@ -63,6 +63,4 @@ public class CategoryController {
 
         return ResponseEntity.ok(new ApiResponse("Successfully Updated Category!", updatedCategory));
     }
-
-
 }

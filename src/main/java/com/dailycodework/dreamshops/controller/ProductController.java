@@ -72,16 +72,17 @@ public class ProductController {
     public ResponseEntity<ApiResponse> getProductByCategoryAndBrand(@PathVariable String category, @PathVariable String brand){
 
         List<Product> products = productService.getAllProductsByCategoryAndBrand(category, brand);
-
-        return ResponseEntity.ok(new ApiResponse("Success", products));
+        Long count = productService.countByCategoryAndBrand(category, brand);
+        return ResponseEntity.ok(new ApiResponse(String.format("Total Products with Category and Brand - %s and %s: %s", category, brand, count), products));
     }
 
     @GetMapping("/by-name/{name}/product")
     public ResponseEntity<ApiResponse> getProductByName(@PathVariable String name) {
 
         List<Product> products = productService.getAllProductsByName(name);
+        Long count = productService.countByName(name);
 
-        return ResponseEntity.ok(new ApiResponse("Success", products));
+        return ResponseEntity.ok(new ApiResponse(String.format("Total Products with Name - %s: %s",name, count), products));
     }
 
     @GetMapping("product/by-brand")
@@ -91,14 +92,15 @@ public class ProductController {
 
         Long count = productService.countByBrand(brand);
 
-        return ResponseEntity.ok(new ApiResponse(String.format("Total Products with Brand %s: %s", brand, count),products));
+        return ResponseEntity.ok(new ApiResponse(String.format("Total Products with Brand - %s: %s", brand, count),products));
     }
 
     @GetMapping("product/{category}/all/products")
     public ResponseEntity<ApiResponse> getAllProductByCategory(@PathVariable String category) {
 
         List<Product> products = productService.getAllProductsByCategory(category);
+        Long countByCategoryName = productService.countByCategoryName(category);
 
-        return ResponseEntity.ok(new ApiResponse("Success!", products));
+        return ResponseEntity.ok(new ApiResponse(String.format("Total Products with Category - %s: %s", category, countByCategoryName), products));
     }
 }
