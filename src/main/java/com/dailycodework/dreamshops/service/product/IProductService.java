@@ -30,4 +30,6 @@ public interface IProductService {
     Long countByName(String name);
 
     Long countByCategoryAndBrand(String category, String brand);
+
+    Long countByBrandAndName(String brandName, String productName);
 }

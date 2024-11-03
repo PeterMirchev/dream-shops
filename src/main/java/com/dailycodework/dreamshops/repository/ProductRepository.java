@@ -20,6 +20,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByBrandAndName(String brand, String name);
 
+    @Query("""
+    SELECT COUNT(*) FROM Product p
+    WHERE p.brand = :brand
+    AND p.name = :name
+        """)
     Long countByBrandAndName(String brand, String name);
 
     @Query("""

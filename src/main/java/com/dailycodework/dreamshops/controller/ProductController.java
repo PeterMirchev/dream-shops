@@ -64,8 +64,9 @@ public class ProductController {
     public ResponseEntity<ApiResponse> getProductByBrandAndName(@RequestParam String brandName, @RequestParam String productName) {
 
         List<Product> products = productService.getAllProductsByBrandAndName(brandName, productName);
+        Long count = productService.countByBrandAndName(brandName, productName);
 
-        return ResponseEntity.ok(new ApiResponse("Success", products));
+        return ResponseEntity.ok(new ApiResponse(String.format("Total %s Products with Brand %s: %s", productName, brandName, count), products));
     }
 
     @GetMapping("/by/category-and-brand/{category}/{brand}")

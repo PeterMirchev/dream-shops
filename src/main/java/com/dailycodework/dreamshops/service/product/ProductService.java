@@ -102,9 +102,9 @@ public class ProductService implements IProductService {
 
     @Override
     public Long countProductsByBrandAndName(String brand, String name) {
-
-        return productRepository.countByBrandAndName(brand, name);
+        return null;
     }
+
 
     @Override
     public Long count() {
@@ -129,6 +129,11 @@ public class ProductService implements IProductService {
     @Override
     public Long countByCategoryAndBrand(String category, String brand) {
         return productRepository.countByCategoryAndBrand(category, brand);
+    }
+
+    @Override
+    public Long countByBrandAndName(String brandName, String productName) {
+        return productRepository.countByBrandAndName(brandName, productName);
     }
 
     private Product createProduct(AddProductRequest request, Category category) {
