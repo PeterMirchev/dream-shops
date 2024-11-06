@@ -2,7 +2,6 @@ package com.dailycodework.dreamshops.service.cart;
 
 import com.dailycodework.dreamshops.exception.ResourceNotFoundException;
 import com.dailycodework.dreamshops.model.Cart;
-import com.dailycodework.dreamshops.model.CartItem;
 import com.dailycodework.dreamshops.repository.CartItemRepository;
 import com.dailycodework.dreamshops.repository.CartRepository;
 import org.springframework.stereotype.Service;
