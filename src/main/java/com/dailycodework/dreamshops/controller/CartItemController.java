@@ -25,11 +25,21 @@ public class CartItemController {
         return ResponseEntity.ok(new ApiResponse("Add Item Success!", null));
     }
 
-    @DeleteMapping("/{cartId}/{itemId}/remove")
+    @DeleteMapping("/cart/{cartId}/{itemId}/remove")
     public ResponseEntity<ApiResponse> removeItemFromCart(@PathVariable Long cartId, @PathVariable Long itemId) {
 
         cartItemService.removeItemFromCart(cartId, itemId);
 
         return ResponseEntity.ok(new ApiResponse("Item Removed Successfully!", null));
+    }
+
+    @PutMapping("/cart/{cartId}/item/{itemId}/update")
+    public ResponseEntity<ApiResponse> updateItemQuantity(@PathVariable Long cartId,
+                                                          @PathVariable Long itemId,
+                                                          @RequestParam Integer quantity) {
+
+        cartItemService.updateItemQuantity(cartId, itemId, quantity);
+
+        return ResponseEntity.ok(new ApiResponse("Update Item Success!", null));
     }
 }
