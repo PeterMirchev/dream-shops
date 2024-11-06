@@ -9,6 +9,8 @@ import com.dailycodework.dreamshops.repository.CartRepository;
 import com.dailycodework.dreamshops.service.product.IProductService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 public class CartItemService implements ICartItemService {
 
@@ -40,7 +42,7 @@ public class CartItemService implements ICartItemService {
                 .findFirst().orElse(new CartItem());
 
         if (cartItem.getId() == null) {
-            cartItem.setCart( cart);
+            cartItem.setCart(cart);
             cartItem.setProduct(product);
             cartItem.setQuantity(quantity);
             cartItem.setUnitPrice(product.getPrice());
@@ -58,12 +60,7 @@ public class CartItemService implements ICartItemService {
     public void removeItemFromCart(Long cartId, Long productId) {
 
         Cart cart = cartService.getCart(cartId);
-        CartItem itemToRemove = cart
-                .getItems()
-                .stream()
-                .filter( item -> item.getProduct().getId().equals(productId))
-                .findFirst()
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Product Not Found! Invalid Product id %s", productId)));
+        CartItem itemToRemove = getCartItem(cartId, productId);
 
         cart.removeItem(itemToRemove);
         cartRepository.save(cart);
@@ -77,12 +74,27 @@ public class CartItemService implements ICartItemService {
                 .stream()
                 .filter(item -> item.getProduct().getId().equals(productId))
                 .findFirst()
-                .ifPresent(item ->  {
+                .ifPresent(item -> {
                     item.setQuantity(item.getQuantity() + quantity);
                     item.setUnitPrice(item.getProduct().getPrice());
                     item.setTotalPrice();
                 });
 
+        BigDecimal totalAmount = cart.getTotalAmount();
+        cart.setTotalAmount(totalAmount);
         cartRepository.save(cart);
+    }
+
+    @Override
+    public CartItem getCartItem(Long cartId, Long productId) {
+
+        Cart cart = cartService.getCart(cartId);
+
+        return cart
+                .getItems()
+                .stream()
+                .filter(item -> item.getProduct().getId().equals(productId))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Item Not Found! Invalid Item ID - %s", productId)));
     }
 }
