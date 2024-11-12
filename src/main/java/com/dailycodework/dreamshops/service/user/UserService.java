@@ -1,11 +1,13 @@
 package com.dailycodework.dreamshops.service.user;
 
+import com.dailycodework.dreamshops.exception.ResourceAlreadyExistException;
 import com.dailycodework.dreamshops.exception.ResourceNotFoundException;
 import com.dailycodework.dreamshops.model.User;
 import com.dailycodework.dreamshops.repository.UserRepository;
 import com.dailycodework.dreamshops.request.CreateUserRequest;
 import com.dailycodework.dreamshops.request.UserUpdateRequest;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class UserService implements IUserService {
@@ -25,6 +27,10 @@ public class UserService implements IUserService {
 
     @Override
     public User createUser(CreateUserRequest request) {
+
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new ResourceAlreadyExistException("Email Already Registered Within User!\n Email - %s".formatted(request.getEmail()));
+        }
 
         User user = mapRequestToUser(request);
 
