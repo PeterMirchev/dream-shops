@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("${api.prefix}/orders")
@@ -25,16 +24,18 @@ public class OrderController {
     public ResponseEntity<ApiResponse> createOrder(@PathVariable Long userId) {
 
         Order order = orderService.placeOrder(userId);
+        OrderDto response = OrderMapper.mapToOrderDto(order);
 
-        return ResponseEntity.ok(new ApiResponse("Item Order Success!", order));
+        return ResponseEntity.ok(new ApiResponse("Item Order Success!", response));
     }
     
     @GetMapping("/order/{orderId}")
     public ResponseEntity<ApiResponse> getOrderById(@PathVariable Long orderId) {
 
         Order order = orderService.getOrder(orderId);
+        OrderDto response = OrderMapper.mapToOrderDto(order);
 
-        return ResponseEntity.ok(new ApiResponse("Order:", order));
+        return ResponseEntity.ok(new ApiResponse("Order:", response));
     }
 
     @GetMapping("/{userId}/orders")

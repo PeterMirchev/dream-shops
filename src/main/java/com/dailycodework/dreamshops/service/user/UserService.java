@@ -32,7 +32,7 @@ public class UserService implements IUserService {
             throw new ResourceAlreadyExistException("Email Already Registered Within User!\n Email - %s".formatted(request.getEmail()));
         }
 
-        User user = mapRequestToUser(request);
+        User user = UserMapper.mapToUser(request);
 
         return userRepository.save(user);
     }
@@ -56,14 +56,5 @@ public class UserService implements IUserService {
                         () -> {
                             throw new ResourceNotFoundException("User Not Found! Invalid User ID - %s".formatted(userId));
                         } );
-    }
-
-    private static User mapRequestToUser(CreateUserRequest request) {
-        User user = new User();
-
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setEmail(request.getEmail());
-        return user;
     }
 }
