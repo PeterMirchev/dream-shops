@@ -5,7 +5,6 @@ import com.dailycodework.dreamshops.dto.ProductDto;
 import com.dailycodework.dreamshops.model.Image;
 import com.dailycodework.dreamshops.model.Product;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProductMapper {
