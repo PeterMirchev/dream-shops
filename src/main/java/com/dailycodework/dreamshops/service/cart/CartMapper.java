@@ -5,12 +5,10 @@ import com.dailycodework.dreamshops.model.CartItem;
 import com.dailycodework.dreamshops.response.dto.CartDto;
 import com.dailycodework.dreamshops.response.dto.CartItemDto;
 import com.dailycodework.dreamshops.service.product.ProductMapper;
-import org.springframework.stereotype.Component;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Component
 public class CartMapper {
 
 
