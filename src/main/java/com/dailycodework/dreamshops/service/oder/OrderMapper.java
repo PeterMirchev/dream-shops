@@ -1,7 +1,7 @@
 package com.dailycodework.dreamshops.service.oder;
 
-import com.dailycodework.dreamshops.dto.OrderDto;
-import com.dailycodework.dreamshops.dto.OrderItemDto;
+import com.dailycodework.dreamshops.response.dto.OrderDto;
+import com.dailycodework.dreamshops.response.dto.OrderItemDto;
 import com.dailycodework.dreamshops.model.Order;
 import com.dailycodework.dreamshops.model.OrderItem;
 

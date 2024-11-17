@@ -1,6 +1,6 @@
 package com.dailycodework.dreamshops.controller;
 
-import com.dailycodework.dreamshops.dto.OrderDto;
+import com.dailycodework.dreamshops.response.dto.OrderDto;
 import com.dailycodework.dreamshops.model.Order;
 import com.dailycodework.dreamshops.response.ApiResponse;
 import com.dailycodework.dreamshops.service.oder.IOrderService;

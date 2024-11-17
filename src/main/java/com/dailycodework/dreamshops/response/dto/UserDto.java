@@ -1,4 +1,4 @@
-package com.dailycodework.dreamshops.dto;
+package com.dailycodework.dreamshops.response.dto;
 
 import com.dailycodework.dreamshops.model.Cart;
 import lombok.Builder;

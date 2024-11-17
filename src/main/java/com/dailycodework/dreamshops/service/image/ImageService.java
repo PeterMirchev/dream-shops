@@ -1,6 +1,6 @@
 package com.dailycodework.dreamshops.service.image;
 
-import com.dailycodework.dreamshops.dto.ImageDto;
+import com.dailycodework.dreamshops.response.dto.ImageDto;
 import com.dailycodework.dreamshops.exception.ResourceNotFoundException;
 import com.dailycodework.dreamshops.model.Image;
 import com.dailycodework.dreamshops.model.Product;

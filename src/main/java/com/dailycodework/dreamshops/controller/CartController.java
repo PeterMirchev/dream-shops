@@ -2,6 +2,8 @@ package com.dailycodework.dreamshops.controller;
 
 import com.dailycodework.dreamshops.model.Cart;
 import com.dailycodework.dreamshops.response.ApiResponse;
+import com.dailycodework.dreamshops.response.dto.CartDto;
+import com.dailycodework.dreamshops.service.cart.CartMapper;
 import com.dailycodework.dreamshops.service.cart.ICartService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +23,9 @@ public class CartController {
     private ResponseEntity<ApiResponse> getCart(@PathVariable Long cartId) {
 
         Cart cart = cartService.getCart(cartId);
+        CartDto response = CartMapper.mapToCartDto(cart);
 
-        return ResponseEntity.ok(new ApiResponse("Success:", cart));
+        return ResponseEntity.ok(new ApiResponse("Success:", response));
     }
 
     @DeleteMapping("/{cartId}/clear")

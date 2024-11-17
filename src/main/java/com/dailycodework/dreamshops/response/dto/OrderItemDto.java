@@ -1,4 +1,4 @@
-package com.dailycodework.dreamshops.dto;
+package com.dailycodework.dreamshops.response.dto;
 
 import lombok.Builder;
 import lombok.Data;

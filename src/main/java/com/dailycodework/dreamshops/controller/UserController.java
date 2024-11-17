@@ -1,6 +1,6 @@
 package com.dailycodework.dreamshops.controller;
 
-import com.dailycodework.dreamshops.dto.UserDto;
+import com.dailycodework.dreamshops.response.dto.UserDto;
 import com.dailycodework.dreamshops.model.User;
 import com.dailycodework.dreamshops.request.CreateUserRequest;
 import com.dailycodework.dreamshops.request.UserUpdateRequest;
