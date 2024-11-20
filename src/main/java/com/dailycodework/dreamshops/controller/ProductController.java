@@ -62,7 +62,7 @@ public class ProductController {
         return ResponseEntity.ok(new ApiResponse("Product Updated Successfully!", response));
     }
 
-    @DeleteMapping("/product/{productId}/delete")
+    @DeleteMapping("/product/{productId}/delete") //TODO: fix the problem with the deletion
     public ResponseEntity<ApiResponse> deleteProduct(@PathVariable Long productId) {
 
         productService.deleteProductById(productId);
@@ -111,7 +111,7 @@ public class ProductController {
         return ResponseEntity.ok(new ApiResponse(String.format("Total Products with Name - %s: %s",name, count), response));
     }
 
-    @GetMapping("product/by-brand")
+    @GetMapping("/product/by-brand")
     public ResponseEntity<ApiResponse> getProductByBrand(@RequestParam String brand) {
 
         Long count = productService.countByBrand(brand);
@@ -125,7 +125,7 @@ public class ProductController {
         return ResponseEntity.ok(new ApiResponse(String.format("Total Products with Brand - %s: %s", brand, count), response));
     }
 
-    @GetMapping("product/{category}/all/products")
+    @GetMapping("/{category}/all/products")
     public ResponseEntity<ApiResponse> getAllProductByCategory(@PathVariable String category) {
 
         Long countByCategoryName = productService.countByCategoryName(category);
