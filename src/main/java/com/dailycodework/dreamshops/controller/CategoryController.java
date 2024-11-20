@@ -33,7 +33,7 @@ public class CategoryController {
         return ResponseEntity.ok(new ApiResponse("Category successfully added", category));
     }
 
-    @GetMapping("/category/{id}/category")
+    @GetMapping("/category/{id}")
     public ResponseEntity<ApiResponse> getCategoryById(@PathVariable Long id) {
 
         Category category = categoryService.getCategoryById(id);

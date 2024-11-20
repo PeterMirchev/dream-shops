@@ -14,6 +14,10 @@ public class CartMapper {
 
     public static CartDto mapToCartDto(Cart cart) {
 
+        if (cart == null) {
+            return null;
+        }
+
         Set<CartItemDto> items = cart.getItems().stream()
                 .map(CartMapper::mapToCartItemDto)
                 .collect(Collectors.toSet());
@@ -21,6 +25,7 @@ public class CartMapper {
         return CartDto.builder()
                 .cartId(cart.getId())
                 .items(items)
+                .totalAmount(cart.getTotalAmount())
                 .build();
     }
 
