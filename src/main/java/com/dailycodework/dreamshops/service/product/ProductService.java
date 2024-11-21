@@ -29,7 +29,8 @@ public class ProductService implements IProductService {
         String categoryName = request.getCategory().getName();
 
         if (productExists(request.getName(), request.getBrand())) {
-            throw new ResourceAlreadyExistException("Product %s %s already exists in the system.".formatted(request.getName(), request.getBrand()));
+            throw new ResourceAlreadyExistException(("Product %s with brand %s already exists in the system." +
+                    "\nPlease update the product quantity.").formatted(request.getName(), request.getBrand()));
         }
 
         Category category = Optional.ofNullable(categoryRepository.findByName(categoryName))
