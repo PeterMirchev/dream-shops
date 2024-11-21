@@ -1,6 +1,7 @@
 package com.dailycodework.dreamshops.service.product;
 
 import com.dailycodework.dreamshops.exception.ProductNotFoundException;
+import com.dailycodework.dreamshops.exception.ResourceAlreadyExistException;
 import com.dailycodework.dreamshops.model.Category;
 import com.dailycodework.dreamshops.model.Product;
 import com.dailycodework.dreamshops.repository.CategoryRepository;
@@ -26,6 +27,10 @@ public class ProductService implements IProductService {
     public Product addProduct(AddProductRequest request) {
 
         String categoryName = request.getCategory().getName();
+
+        if (productExists(request.getName(), request.getBrand())) {
+            throw new ResourceAlreadyExistException("Product %s %s already exists in the system.".formatted(request.getName(), request.getBrand()));
+        }
 
         Category category = Optional.ofNullable(categoryRepository.findByName(categoryName))
                 .orElseGet(() -> {
@@ -102,7 +107,7 @@ public class ProductService implements IProductService {
 
     @Override
     public Long countProductsByBrandAndName(String brand, String name) {
-        return null;
+        return productRepository.countByBrandAndName(brand, name);
     }
 
 
@@ -159,5 +164,10 @@ public class ProductService implements IProductService {
         existingProduct.setCategory(category);
 
         return existingProduct;
+    }
+
+    private boolean productExists(String name, String brand) {
+
+        return productRepository.existsByNameAndBrand(name, brand);
     }
 }

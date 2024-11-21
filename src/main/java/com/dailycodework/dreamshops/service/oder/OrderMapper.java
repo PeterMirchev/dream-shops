@@ -33,6 +33,7 @@ public class OrderMapper {
         return OrderItemDto.builder()
                 .productId(item.getId())
                 .productName(item.getProduct().getName())
+                .productBrand(item.getProduct().getBrand())
                 .quantity(item.getQuantity())
                 .price(item.getPrice())
                 .build();

@@ -48,4 +48,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     AND p.brand =:brand
         """)
     Long countByCategoryAndBrand(String category, String brand);
+
+    boolean existsByNameAndBrand(String name, String brand);
 }

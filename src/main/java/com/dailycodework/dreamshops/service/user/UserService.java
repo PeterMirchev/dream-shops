@@ -6,6 +6,7 @@ import com.dailycodework.dreamshops.model.User;
 import com.dailycodework.dreamshops.repository.UserRepository;
 import com.dailycodework.dreamshops.request.CreateUserRequest;
 import com.dailycodework.dreamshops.request.UserUpdateRequest;
+import com.dailycodework.dreamshops.service.cart.ICartService;
 import org.springframework.stereotype.Service;
 
 
@@ -13,9 +14,11 @@ import org.springframework.stereotype.Service;
 public class UserService implements IUserService {
 
     private final UserRepository userRepository;
+    private final ICartService cartService;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, ICartService cartService) {
         this.userRepository = userRepository;
+        this.cartService = cartService;
     }
 
     @Override
@@ -34,7 +37,11 @@ public class UserService implements IUserService {
 
         User user = UserMapper.mapToUser(request);
 
-        return userRepository.save(user);
+        User persistedUser = userRepository.save(user);
+
+        cartService.initializeNewCart(persistedUser);
+
+        return userRepository.save(persistedUser);
     }
 
     @Override

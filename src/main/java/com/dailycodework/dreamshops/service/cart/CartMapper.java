@@ -15,7 +15,7 @@ public class CartMapper {
     public static CartDto mapToCartDto(Cart cart) {
 
         if (cart == null) {
-            return null;
+            cart = new Cart();
         }
 
         Set<CartItemDto> items = cart.getItems().stream()
