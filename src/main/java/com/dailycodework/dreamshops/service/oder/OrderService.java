@@ -18,6 +18,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.dailycodework.dreamshops.service.ServiceMessages.ORDER_NOT_FOUND;
+
 @Service
 public class OrderService implements IOrderService {
 
@@ -36,7 +38,7 @@ public class OrderService implements IOrderService {
     public Order getOrder(Long orderId) {
 
         return orderRepository.findById(orderId)
-                .orElseThrow(() -> new ResourceNotFoundException("Order Not Found! Invalid Order ID - %s".formatted(orderId)));
+                .orElseThrow(() -> new ResourceNotFoundException(ORDER_NOT_FOUND.formatted(orderId)));
     }
 
     @Transactional

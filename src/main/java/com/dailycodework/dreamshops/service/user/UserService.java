@@ -9,6 +9,9 @@ import com.dailycodework.dreamshops.request.UserUpdateRequest;
 import com.dailycodework.dreamshops.service.cart.ICartService;
 import org.springframework.stereotype.Service;
 
+import static com.dailycodework.dreamshops.service.ServiceMessages.EMAIL_ALREADY_EXIST;
+import static com.dailycodework.dreamshops.service.ServiceMessages.USER_NOT_FOUND;
+
 
 @Service
 public class UserService implements IUserService {
@@ -25,14 +28,14 @@ public class UserService implements IUserService {
     public User getUserById(Long userId) {
 
         return userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User Not Found! Invalid User ID - %s".formatted(userId)));
+                .orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND.formatted(userId)));
     }
 
     @Override
     public User createUser(CreateUserRequest request) {
 
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new ResourceAlreadyExistException("Email Already Registered Within User!\n Email - %s".formatted(request.getEmail()));
+            throw new ResourceAlreadyExistException(EMAIL_ALREADY_EXIST.formatted(request.getEmail()));
         }
 
         User user = UserMapper.mapToUser(request);
@@ -61,7 +64,7 @@ public class UserService implements IUserService {
         userRepository.findById(userId)
                 .ifPresentOrElse(userRepository :: delete,
                         () -> {
-                            throw new ResourceNotFoundException("User Not Found! Invalid User ID - %s".formatted(userId));
+                            throw new ResourceNotFoundException(USER_NOT_FOUND.formatted(userId));
                         } );
     }
 }

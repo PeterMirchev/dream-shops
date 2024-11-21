@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static com.dailycodework.dreamshops.service.ServiceMessages.PRODUCT_ALREADY_EXIST;
+import static com.dailycodework.dreamshops.service.ServiceMessages.PRODUCT_NOT_FOUND;
+
 @Service
 public class ProductService implements IProductService {
     private final ProductRepository productRepository;
@@ -29,8 +32,7 @@ public class ProductService implements IProductService {
         String categoryName = request.getCategory().getName();
 
         if (productExists(request.getName(), request.getBrand())) {
-            throw new ResourceAlreadyExistException(("Product %s with brand %s already exists in the system." +
-                    "\nPlease update the product quantity.").formatted(request.getName(), request.getBrand()));
+            throw new ResourceAlreadyExistException((PRODUCT_ALREADY_EXIST.formatted(request.getName(), request.getBrand())));
         }
 
         Category category = Optional.ofNullable(categoryRepository.findByName(categoryName))
@@ -48,7 +50,7 @@ public class ProductService implements IProductService {
     public Product getProductById(Long id) {
 
         return productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException(String.format("Product Not found! Invalid Product id - %s", id)));
+                .orElseThrow(() -> new ProductNotFoundException(String.format(PRODUCT_NOT_FOUND, id)));
     }
 
     @Override
@@ -57,7 +59,7 @@ public class ProductService implements IProductService {
         productRepository.findById(id)
                 .ifPresentOrElse(productRepository::delete,
                         () -> {
-                    throw new ProductNotFoundException(String.format("Product Not found! Invalid Product id - %s", id));
+                    throw new ProductNotFoundException(String.format(PRODUCT_NOT_FOUND, id));
                         });
     }
 
@@ -67,7 +69,7 @@ public class ProductService implements IProductService {
         return productRepository.findById(productId)
                 .map(existingProduct -> updateExistingProduct(existingProduct, request))
                 .map(productRepository::save)
-                .orElseThrow(() -> new ProductNotFoundException(String.format("Product Not found! Invalid Product id - %s", productId)));
+                .orElseThrow(() -> new ProductNotFoundException(String.format(PRODUCT_NOT_FOUND, productId)));
     }
 
     @Override

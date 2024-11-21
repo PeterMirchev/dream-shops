@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
+import static com.dailycodework.dreamshops.service.ServiceMessages.ITEM_NOT_FOUND;
+
 @Service
 public class CartItemService implements ICartItemService {
 
@@ -98,6 +100,6 @@ public class CartItemService implements ICartItemService {
                 .stream()
                 .filter(item -> item.getProduct().getId().equals(productId))
                 .findFirst()
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Item Not Found! Invalid Item ID - %s", productId)));
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(ITEM_NOT_FOUND, productId)));
     }
 }

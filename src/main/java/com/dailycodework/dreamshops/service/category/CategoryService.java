@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static com.dailycodework.dreamshops.service.ServiceMessages.CATEGORY_ALREADY_EXIST;
+import static com.dailycodework.dreamshops.service.ServiceMessages.CATEGORY_NOT_FOUND;
+
 @Service
 public class CategoryService implements ICategoryService{
 
@@ -22,7 +25,7 @@ public class CategoryService implements ICategoryService{
     public Category getCategoryById(Long id) {
 
         return categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Category Not Found. Invalid Category id - %s", id)));
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(CATEGORY_NOT_FOUND, id)));
     }
 
     @Override
@@ -42,7 +45,7 @@ public class CategoryService implements ICategoryService{
         return Optional.of(category)
                 .filter(c -> !categoryRepository.existsByName(c.getName()))
                 .map(categoryRepository::save)
-                .orElseThrow(() -> new ResourceAlreadyExistException(String.format("Category already exists with category name - %s", category.getName())));
+                .orElseThrow(() -> new ResourceAlreadyExistException(String.format(CATEGORY_ALREADY_EXIST, category.getName())));
     }
 
     @Override
@@ -52,7 +55,7 @@ public class CategoryService implements ICategoryService{
                 .map(oldCategory -> {
                     oldCategory.setName(category.getName());
                     return categoryRepository.save(oldCategory);
-                }).orElseThrow(() -> new ResourceNotFoundException(String.format("Category Not Found. Invalid Category id - %s", id)));
+                }).orElseThrow(() -> new ResourceNotFoundException(String.format(CATEGORY_NOT_FOUND, id)));
     }
 
     @Override
@@ -61,7 +64,7 @@ public class CategoryService implements ICategoryService{
         categoryRepository.findById(id)
                 .ifPresentOrElse(categoryRepository::delete,
                         () -> {
-                            throw new ResourceNotFoundException(String.format("Category Not Found. Invalid Category id - %s", id));
+                            throw new ResourceNotFoundException(String.format(CATEGORY_NOT_FOUND, id));
                         });
     }
 }

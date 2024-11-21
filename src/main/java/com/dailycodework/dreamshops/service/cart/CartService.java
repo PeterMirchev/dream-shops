@@ -12,6 +12,8 @@ import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static com.dailycodework.dreamshops.service.ServiceMessages.CART_NOT_FOUND;
+
 @Service
 public class CartService implements ICartService {
 
@@ -28,7 +30,7 @@ public class CartService implements ICartService {
     public Cart getCart(Long id) {
 
         Cart cart = cartRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Card Not Found! Invalid Card ID - %s", id)));
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(CART_NOT_FOUND, id)));
 
         BigDecimal totalAmount = cart.getTotalAmount();
         cart.setTotalAmount(totalAmount);

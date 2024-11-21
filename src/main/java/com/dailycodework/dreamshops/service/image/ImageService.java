@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.dailycodework.dreamshops.service.ServiceMessages.DOWNLOAD_URL;
+import static com.dailycodework.dreamshops.service.ServiceMessages.INVALID_IMAGE_ID;
 
 @Service
 public class ImageService implements IImageService {
@@ -31,7 +32,7 @@ public class ImageService implements IImageService {
     public Image getImageById(Long id) {
 
         return imageRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Invalid Image id - %s", id)));
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(INVALID_IMAGE_ID, id)));
     }
 
     @Override
@@ -40,7 +41,7 @@ public class ImageService implements IImageService {
         imageRepository.findById(id)
                 .ifPresentOrElse(imageRepository::delete,
                         () ->  {
-                    throw new ResourceNotFoundException(String.format("Invalid Image id - %s", id));
+                    throw new ResourceNotFoundException(String.format(INVALID_IMAGE_ID, id));
                         });
     }
 
