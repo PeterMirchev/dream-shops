@@ -1,11 +1,13 @@
 package com.dailycodework.dreamshops.repository;
 
 import com.dailycodework.dreamshops.model.Product;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -50,4 +52,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Long countByCategoryAndBrand(String category, String brand);
 
     boolean existsByNameAndBrand(String name, String brand);
+
+    Optional<Product> getProductByBrandAndName(@NotNull String brand, @NotNull String name);
 }

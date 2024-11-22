@@ -7,6 +7,7 @@ import com.dailycodework.dreamshops.model.Product;
 import com.dailycodework.dreamshops.repository.CategoryRepository;
 import com.dailycodework.dreamshops.repository.ProductRepository;
 import com.dailycodework.dreamshops.request.AddProductRequest;
+import com.dailycodework.dreamshops.request.ProductQuantityUpdate;
 import com.dailycodework.dreamshops.request.ProductUpdateRequest;
 import org.springframework.stereotype.Service;
 
@@ -71,6 +72,19 @@ public class ProductService implements IProductService {
                 .map(productRepository::save)
                 .orElseThrow(() -> new ProductNotFoundException(String.format(PRODUCT_NOT_FOUND, productId)));
     }
+
+    @Override
+    public Product updateProductQuantity(ProductQuantityUpdate request) {
+
+        Product product = productRepository.getProductByBrandAndName(request.getBrand(), request.getName())
+                .orElseThrow(() -> new ProductNotFoundException(String.format(PRODUCT_NOT_FOUND, request.getName())));
+
+        product.setInventory(product.getInventory() + request.getQuantity());
+        productRepository.save(product);
+
+        return product;
+    }
+
 
     @Override
     public List<Product> getAllProducts() {

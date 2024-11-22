@@ -1,5 +1,6 @@
 package com.dailycodework.dreamshops.controller;
 
+import com.dailycodework.dreamshops.request.ProductQuantityUpdate;
 import com.dailycodework.dreamshops.response.dto.ProductDto;
 import com.dailycodework.dreamshops.model.Product;
 import com.dailycodework.dreamshops.request.AddProductRequest;
@@ -57,6 +58,15 @@ public class ProductController {
     public ResponseEntity<ApiResponse> updateProduct(@RequestBody ProductUpdateRequest request, @PathVariable Long productId) {
 
         Product product = productService.updateProduct(request, productId);
+        ProductDto response = ProductMapper.convertToProductDto(product);
+
+        return ResponseEntity.ok(new ApiResponse("Product Updated Successfully!", response));
+    }
+
+    @PutMapping("/product/update")
+    public ResponseEntity<ApiResponse> updateProductQuantity(@RequestBody ProductQuantityUpdate request) {
+
+        Product product = productService.updateProductQuantity(request);
         ProductDto response = ProductMapper.convertToProductDto(product);
 
         return ResponseEntity.ok(new ApiResponse("Product Updated Successfully!", response));
