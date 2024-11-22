@@ -11,9 +11,6 @@ import org.springframework.security.core.GrantedAuthority;
 import java.security.Key;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static jdk.internal.org.jline.keymap.KeyMap.key;
 
 public class JwtUtils {
 
