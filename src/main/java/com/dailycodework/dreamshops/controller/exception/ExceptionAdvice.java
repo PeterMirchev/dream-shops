@@ -3,6 +3,7 @@ package com.dailycodework.dreamshops.controller.exception;
 import com.dailycodework.dreamshops.exception.ProductNotFoundException;
 import com.dailycodework.dreamshops.exception.ResourceAlreadyExistException;
 import com.dailycodework.dreamshops.exception.ResourceNotFoundException;
+import com.dailycodework.dreamshops.exception.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,5 +29,11 @@ public class ExceptionAdvice {
     public ResponseEntity<String> resourceNotFoundException(@Autowired ResourceAlreadyExistException exception) {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<String> unauthorizedException(@Autowired UnauthorizedException exception) {
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
     }
 }

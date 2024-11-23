@@ -7,6 +7,9 @@ import com.dailycodework.dreamshops.repository.UserRepository;
 import com.dailycodework.dreamshops.request.CreateUserRequest;
 import com.dailycodework.dreamshops.request.UserUpdateRequest;
 import com.dailycodework.dreamshops.service.cart.ICartService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import static com.dailycodework.dreamshops.service.ServiceMessages.EMAIL_ALREADY_EXIST;
@@ -18,10 +21,13 @@ public class UserService implements IUserService {
 
     private final UserRepository userRepository;
     private final ICartService cartService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, ICartService cartService) {
+    public UserService(UserRepository userRepository, ICartService cartService, PasswordEncoder passwordEncoder) {
+
         this.userRepository = userRepository;
         this.cartService = cartService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -39,6 +45,7 @@ public class UserService implements IUserService {
         }
 
         User user = UserMapper.mapToUser(request);
+        passwordEncoder.encode(user.getPassword());
 
         User persistedUser = userRepository.save(user);
 
@@ -66,5 +73,14 @@ public class UserService implements IUserService {
                         () -> {
                             throw new ResourceNotFoundException(USER_NOT_FOUND.formatted(userId));
                         } );
+    }
+
+    @Override
+    public User getAuthenticatedUser() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+
+        return userRepository.findByEmail(email).get();
     }
 }

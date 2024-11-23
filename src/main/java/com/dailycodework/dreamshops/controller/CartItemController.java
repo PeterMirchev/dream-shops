@@ -29,7 +29,7 @@ public class CartItemController {
                                                      @RequestParam Integer quantity) {
 
 
-        User user = userService.getUserById(1L);
+        User user = userService.getAuthenticatedUser();
         Cart cart = cartService.initializeNewCart(user);
 
 

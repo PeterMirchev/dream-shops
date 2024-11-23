@@ -3,6 +3,7 @@ package com.dailycodework.dreamshops.security.config;
 import com.dailycodework.dreamshops.security.jwt.AuthTokenFilter;
 import com.dailycodework.dreamshops.security.jwt.JwtAuthEntryPoint;
 import com.dailycodework.dreamshops.security.user.ShopUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.List;
 
@@ -22,10 +24,14 @@ import java.util.List;
 @Configuration
 public class ShopConfig {
 
+    @Autowired
     private final ShopUserDetailsService userDetailsService;
+    @Autowired
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
-    private static final List<String> SECURED_URLS = List.of("");
+    private static final List<String> SECURED_URLS =
+            List.of("/api/v1/carts/**", "/api/v1/cartItems/**");
 
+    @Autowired
     public ShopConfig(ShopUserDetailsService userDetailsService, JwtAuthEntryPoint jwtAuthEntryPoint) {
 
         this.userDetailsService = userDetailsService;
@@ -69,7 +75,8 @@ public class ShopConfig {
                         .anyRequest().permitAll());
 
         http.authenticationProvider(daoAuthenticationProvider());
-        http.addFilter(authTokenFilter());
+        //http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAfter(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
