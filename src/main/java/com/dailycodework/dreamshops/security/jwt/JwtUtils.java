@@ -5,6 +5,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,9 @@ import java.util.List;
 @Component
 public class JwtUtils {
 
+    @Value("${jwt.secret}")
     private String jwtSecret;
+    @Value("${jwt.expirationInMils}")
     private int expirationTime;
 
     public String generateTokenForUser(Authentication authentication) {
