@@ -2,6 +2,7 @@ package com.dailycodework.dreamshops.security.config;
 
 import com.dailycodework.dreamshops.security.jwt.AuthTokenFilter;
 import com.dailycodework.dreamshops.security.jwt.JwtAuthEntryPoint;
+import com.dailycodework.dreamshops.security.jwt.JwtUtils;
 import com.dailycodework.dreamshops.security.user.ShopUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,41 +27,38 @@ import java.util.List;
 @EnableMethodSecurity(prePostEnabled = true)
 public class ShopConfig {
 
-    @Autowired
+
     private final ShopUserDetailsService userDetailsService;
-    @Autowired
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
+    private final JwtUtils jwtUtils; // Add JwtUtils dependency
     private static final List<String> SECURED_URLS =
             List.of("/api/v1/carts/**", "/api/v1/cartItems/**");
 
     @Autowired
-    public ShopConfig(ShopUserDetailsService userDetailsService, JwtAuthEntryPoint jwtAuthEntryPoint) {
-
+    public ShopConfig(ShopUserDetailsService userDetailsService, JwtAuthEntryPoint jwtAuthEntryPoint, JwtUtils jwtUtils) {
         this.userDetailsService = userDetailsService;
         this.jwtAuthEntryPoint = jwtAuthEntryPoint;
+        this.jwtUtils = jwtUtils;
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-
         return new BCryptPasswordEncoder();
     }
 
     @Bean
     public AuthTokenFilter authTokenFilter() {
 
-        return new AuthTokenFilter();
+        return new AuthTokenFilter(jwtUtils, userDetailsService);
     }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-
         return authConfig.getAuthenticationManager();
     }
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
-
         var authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
@@ -69,7 +67,6 @@ public class ShopConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
         http.csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -77,8 +74,8 @@ public class ShopConfig {
                         .anyRequest().permitAll());
 
         http.authenticationProvider(daoAuthenticationProvider());
-        //http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
-        http.addFilterAfter(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        // Add the authTokenFilter in the filter chain
+        http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
