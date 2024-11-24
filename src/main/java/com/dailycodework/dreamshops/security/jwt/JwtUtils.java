@@ -4,7 +4,6 @@ import com.dailycodework.dreamshops.security.user.ShopUserDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,8 +22,10 @@ public class JwtUtils {
     @Value("${auth.token.expirationInMils}")
     private long expirationTime;
 
+    /**
+     * Generates a JWT token for an authenticated user.
+     */
     public String generateTokenForUser(Authentication authentication) {
-
         ShopUserDetails userPrincipal = (ShopUserDetails) authentication.getPrincipal();
 
         List<String> roles = userPrincipal.getAuthorities()
@@ -38,11 +39,14 @@ public class JwtUtils {
                 .claim("roles", roles)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + expirationTime))
-                .signWith(key(), SignatureAlgorithm.HS256).compact();
+                .signWith(key(), SignatureAlgorithm.HS256)
+                .compact();
     }
 
+    /**
+     * Extracts the username from a JWT token.
+     */
     public String getUsernameFromToken(String token) {
-
         return Jwts.parserBuilder()
                 .setSigningKey(key())
                 .build()
@@ -51,20 +55,26 @@ public class JwtUtils {
                 .getSubject();
     }
 
+    /**
+     * Validates a JWT token.
+     */
     public boolean validateToken(String token) {
-
         try {
             Jwts.parserBuilder()
                     .setSigningKey(key())
                     .build()
                     .parseClaimsJws(token);
             return true;
-        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
-            throw new JwtException(e.getMessage());
+        } catch (JwtException | IllegalArgumentException e) {
+            System.err.println("Invalid JWT: " + e.getMessage());
         }
+        return false;
     }
-    private Key key() {
 
+    /**
+     * Generates a secure signing key from the Base64-encoded secret.
+     */
+    private Key key() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
     }
 }

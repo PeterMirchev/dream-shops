@@ -8,9 +8,11 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
+@Transactional
 @Component
 public class DataInitializer implements ApplicationListener<ApplicationReadyEvent> {
 
@@ -30,9 +32,9 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
 
         Set<String> defaultRoles = Set.of("ROLE_ADMIN","ROLE_USER");
 
-        //createDefaultUserIfNotExists();
+        createDefaultUserIfNotExists();
         createDefaultRoleIfNotExists(defaultRoles);
-        //createDefaultAdminIfNotExists();
+        createDefaultAdminIfNotExists();
     }
 
     private void createDefaultUserIfNotExists() {
@@ -75,7 +77,7 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
             user.setPassword(passwordEncoder.encode("123456"));
             user.setRoles(Set.of(role));
             userRepository.save(user);
-            System.out.println("Default admin user " + i + " created successfully.");
+            System.out.println("Default admin user " + i + "created successfully.");
         }
     }
 

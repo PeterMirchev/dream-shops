@@ -9,6 +9,7 @@ import com.dailycodework.dreamshops.response.ApiResponse;
 import com.dailycodework.dreamshops.service.product.IProductService;
 import com.dailycodework.dreamshops.service.product.ProductMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,6 +46,7 @@ public class ProductController {
         return ResponseEntity.ok(new ApiResponse("Success", response));
     }
 
+    @PreAuthorize( "hasRole('USER_ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> addProduct(@RequestBody AddProductRequest productRequest) {
 
@@ -54,6 +56,7 @@ public class ProductController {
         return ResponseEntity.ok(new ApiResponse("Product successfully added!", response));
     }
 
+    @PreAuthorize( "hasRole('USER_ADMIN')")
     @PutMapping("/product/{productId}/update")
     public ResponseEntity<ApiResponse> updateProduct(@RequestBody ProductUpdateRequest request, @PathVariable Long productId) {
 
@@ -63,6 +66,7 @@ public class ProductController {
         return ResponseEntity.ok(new ApiResponse("Product Updated Successfully!", response));
     }
 
+    @PreAuthorize( "hasRole('USER_ADMIN')")
     @PutMapping("/product/update")
     public ResponseEntity<ApiResponse> updateProductQuantity(@RequestBody ProductQuantityUpdate request) {
 
@@ -72,6 +76,7 @@ public class ProductController {
         return ResponseEntity.ok(new ApiResponse("Product Updated Successfully!", response));
     }
 
+    @PreAuthorize( "hasRole('USER_ADMIN')")
     @DeleteMapping("/product/{productId}/delete") //TODO: fix the problem with the deletion
     public ResponseEntity<ApiResponse> deleteProduct(@PathVariable Long productId) {
 
