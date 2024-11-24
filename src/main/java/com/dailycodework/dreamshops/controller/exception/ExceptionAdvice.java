@@ -1,9 +1,6 @@
 package com.dailycodework.dreamshops.controller.exception;
 
-import com.dailycodework.dreamshops.exception.ProductNotFoundException;
-import com.dailycodework.dreamshops.exception.ResourceAlreadyExistException;
-import com.dailycodework.dreamshops.exception.ResourceNotFoundException;
-import com.dailycodework.dreamshops.exception.UnauthorizedException;
+import com.dailycodework.dreamshops.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

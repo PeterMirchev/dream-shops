@@ -46,7 +46,7 @@ public class ProductController {
         return ResponseEntity.ok(new ApiResponse("Success", response));
     }
 
-    @PreAuthorize( "hasRole('USER_ADMIN')")
+    @PreAuthorize( "hasRole('ROLE_ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> addProduct(@RequestBody AddProductRequest productRequest) {
 
