@@ -18,4 +18,13 @@ public class CreateUserRequest {
     private String email;
     @NotNull(message = "password required")
     private String password;
+
+    public CreateUserRequest(String firstName, String lastName, String email, String password) {
+
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
+
 }
