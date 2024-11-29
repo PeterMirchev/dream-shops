@@ -96,7 +96,8 @@ public class UserServiceTest {
         @Test
         @DisplayName("Should throw ResourceNotFoundException when user does not exist")
         void getUserById_returnNullWhenUserDoesNotExist() {
-            when(userRepository.findById(1L)).thenReturn(Optional.empty());
+            when(userRepository.findById(1L))
+                    .thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> userService.getUserById(1L))
                     .isInstanceOf(ResourceNotFoundException.class)

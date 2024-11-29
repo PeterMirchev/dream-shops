@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
 
 import static com.dailycodework.dreamshops.service.ServiceMessages.CART_NOT_FOUND;
 
@@ -19,7 +18,6 @@ public class CartService implements ICartService {
 
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
-    private final AtomicLong cartIdGenerator = new AtomicLong(0);
 
     public CartService(CartRepository cartRepository, CartItemRepository cartItemRepository) {
         this.cartRepository = cartRepository;
@@ -42,17 +40,8 @@ public class CartService implements ICartService {
     @Override
     public void clearCart(Long id) {
 
-        Cart cart = getCart(id);
         cartItemRepository.deleteAllByCartId(id);
-        cart.getItems().clear();
         cartRepository.deleteById(id);
-
-    }
-
-    @Override
-    public BigDecimal getTotalPrice(Long id) {
-
-        return getCart(id).getTotalAmount();
     }
 
     @Override
