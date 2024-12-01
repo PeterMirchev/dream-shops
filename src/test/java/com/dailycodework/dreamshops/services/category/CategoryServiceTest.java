@@ -4,7 +4,6 @@ import com.dailycodework.dreamshops.exception.ResourceNotFoundException;
 import com.dailycodework.dreamshops.model.Category;
 import com.dailycodework.dreamshops.repository.CategoryRepository;
 import com.dailycodework.dreamshops.service.category.CategoryService;
-import org.hibernate.collection.spi.PersistentBag;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -128,4 +127,48 @@ public class CategoryServiceTest {
         }
     }
 
+    @Nested
+    @DisplayName("Tests for updateCategory()")
+    class UpdateCategoryTest {
+
+        //TODO: fix the issue
+     /*  @Test
+       @DisplayName("Successfully update category")*/
+       /*void updateCategory_thenSuccessfullyUpdateCategory() {
+
+           Category category = new Category();
+           category.setId(1L);
+           category.setName("Updated");
+
+           when(categoryRepository.findById(anyLong()))
+                   .thenReturn(null);
+
+           Category updatedCategory = categoryService.updateCategory(category, 1L);
+
+           verify(categoryRepository, times(1)).findById(1L);
+
+           assertEquals(category.getName(), updatedCategory.getName());
+           assertEquals(category.getId(), updatedCategory.getId());
+       }*/
+    }
+
+    @Nested
+    @DisplayName("Test for deleteCategoryById()")
+    class DeleteCategoryByIdTest {
+
+        @Test
+        @DisplayName("Successfully delete category")
+        void deleteCategoryById_thenSuccessfullyDeleteCategory() {
+
+            Long categoryId = 1L;
+
+            when(categoryRepository.findById(categoryId))
+                    .thenReturn(Optional.of(new Category()));
+
+            categoryService.deleteCategoryById(categoryId);
+
+            verify(categoryRepository, times(1)).findById(categoryId);
+            verify(categoryRepository, times(1)).delete(any(Category.class));
+        }
+    }
 }
