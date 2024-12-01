@@ -36,15 +36,15 @@ public class ProductService implements IProductService {
             throw new ResourceAlreadyExistException((PRODUCT_ALREADY_EXIST.formatted(request.getName(), request.getBrand())));
         }
 
-        Category category = Optional.ofNullable(categoryRepository.findByName(categoryName))
+        Optional<Category> category = Optional.ofNullable(categoryRepository.findByName(categoryName))
                 .orElseGet(() -> {
                     Category newCategory = new Category(categoryName);
-                    return categoryRepository.save(newCategory);
+                    return Optional.of(categoryRepository.save(newCategory));
                 });
 
-        request.setCategory(category);
+        request.setCategory(category.get());
 
-        return productRepository.save(createProduct(request, category));
+        return productRepository.save(createProduct(request, category.get()));
     }
 
     @Override
@@ -177,8 +177,8 @@ public class ProductService implements IProductService {
         existingProduct.setPrice(request.getPrice());
         existingProduct.setInventory(request.getInventory());
         existingProduct.setDescription(request.getDescription());
-        Category category = categoryRepository.findByName(request.getCategory().getName());
-        existingProduct.setCategory(category);
+        Optional<Category> category = categoryRepository.findByName(request.getCategory().getName());
+        existingProduct.setCategory(category.get());
 
         return existingProduct;
     }

@@ -9,8 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import static com.dailycodework.dreamshops.service.ServiceMessages.CATEGORY_ALREADY_EXIST;
-import static com.dailycodework.dreamshops.service.ServiceMessages.CATEGORY_NOT_FOUND;
+import static com.dailycodework.dreamshops.service.ServiceMessages.*;
 
 @Service
 public class CategoryService implements ICategoryService{
@@ -31,7 +30,8 @@ public class CategoryService implements ICategoryService{
     @Override
     public Category getCategoryByName(String name) {
 
-        return categoryRepository.findByName(name);
+        return categoryRepository.findByName(name)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(CATEGORY_NAME_NOT_FOUND, name)));
     }
 
     @Override

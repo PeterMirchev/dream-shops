@@ -25,6 +25,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -46,6 +47,7 @@ public class UserServiceTest {
 
     @Mock
     private UserMapper userMapper;
+
     private User user;
 
     private CreateUserRequest createUserRequest;
@@ -109,39 +111,37 @@ public class UserServiceTest {
     @DisplayName("Tests for method createUser()")
     class CreateUserTest {
 
-       /* @Test
+        @Test
         @DisplayName("Should create user successfully")
         void createUser_shouldCreateUserSuccessfully() {
-            // Arrange
-            when(userRepository.findByEmail(createUserRequest.getEmail()))
-                    .thenReturn(null); // Simulate email not already existing.
 
-            when(UserMapper.mapToUser(createUserRequest))
-                    .thenReturn(any());
+            CreateUserRequest request = new CreateUserRequest(
+                    "John",
+                    "Doe",
+                    "ttest@gmail.com",
+                    "123456"
+            );
 
-            when(cartService.initializeNewCart(any()))
-                    .thenReturn(any());
+            User userToPersist = new User();
+            userToPersist.setFirstName("John");
+            userToPersist.setLastName("Doe");
+            userToPersist.setEmail("test@gmail.com");
+            userToPersist.setPassword("123456");
 
-            // Act
-            when(userService.createUser(createUserRequest)
-                    .thenReturn(user);
+            when(userRepository.findByEmail(request.getEmail()))
+                    .thenReturn(null);
 
+            passwordEncoder.encode(userToPersist.getPassword());
 
-            // Assert
-            assertThat(user).isNotNull();
-            assertThat(user.getId()).isEqualTo(1L);
-            assertThat(user.getFirstName()).isEqualTo(user.getFirstName());
-            assertThat(user.getLastName()).isEqualTo(user.getLastName());
-            assertThat(user.getEmail()).isEqualTo(user.getEmail());
+            User persistedUser = userRepository.save(userToPersist);
 
-            // Verify the password is encoded
-            assertThat(user.getPassword()).isNotNull();
+            cartRepository.save(cart);
 
-            // Verify interactions
-            verify(userRepository).findByEmail(createUserRequest.getEmail());
-            verify(userRepository, times(1)).save(any(User.class)); // Save called once directly by service
-            verify(cartService).initializeNewCart(any(User.class));
-        }*/
+            verify(passwordEncoder, times(1)).encode(userToPersist.getPassword());
+            verify(cartService, times(1)).initializeNewCart(userToPersist);
+
+            assertEquals(persistedUser.getFirstName(), request.getFirstName());
+        }
 
         @Test
         @DisplayName("Should throw error due to existing email")
