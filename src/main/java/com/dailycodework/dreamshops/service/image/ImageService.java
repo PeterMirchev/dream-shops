@@ -20,6 +20,7 @@ import static com.dailycodework.dreamshops.service.ServiceMessages.INVALID_IMAGE
 
 @Service
 public class ImageService implements IImageService {
+
     private final ImageRepository imageRepository;
     private final ProductService productService;
 
